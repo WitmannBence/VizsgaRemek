@@ -9,7 +9,7 @@ const App = () => {
     return (
         <div className="container">
             {showRegistration ? (
-                <RegistrationPage />
+                <RegistrationPage setShowRegistration={setShowRegistration} />
             ) : (
                 <div className="hero full-screen">
                     <h1>Time Bank</h1>
