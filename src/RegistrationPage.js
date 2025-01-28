@@ -11,7 +11,9 @@ const RegistrationPage = () => {
             <br/>
             <input type="password" placeholder="Jelszó" />
             <br/>
+            <Link to = "/LoginPage">
             <button className="form-button">Regisztráció</button>
+            </Link>
             <p>Már van fiókod? <a href="#">Elfelejtett jelszó</a></p>
             <Link to="/">
             <button className="cta-button" >
