@@ -1,9 +1,7 @@
-// src/App.js
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import RegistrationPage from './RegistrationPage';
-import './App.css';
 
-const App = () => {
+export default function Home() {
     const [showRegistration, setShowRegistration] = useState(false);
 
     return (
@@ -38,6 +36,4 @@ const App = () => {
             )}
         </div>
     );
-};
-
-export default App;
+}
