@@ -19,9 +19,5 @@ public partial class Transaction
 
     public DateTime TransactionDate { get; set; }
 
-    public virtual User Receiver { get; set; } = null!;
-
-    public virtual User Sender { get; set; } = null!;
-
     public virtual Service Service { get; set; } = null!;
 }

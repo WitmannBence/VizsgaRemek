@@ -7,25 +7,25 @@ public partial class User
 {
     public int UserId { get; set; }
 
-    public string Username { get; set; } = null!;
+    public string FelhasznaloNev { get; set; } = null!;
 
-    public string FullName { get; set; } = null!;
+    public string TeljesNev { get; set; } = null!;
+
+    public string Salt { get; set; } = null!;
+
+    public string Hash { get; set; } = null!;
 
     public string Email { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+    public int Jogosultsag { get; set; }
 
-    public int PrivilegeId { get; set; }
+    public int Aktiv { get; set; }
+
+    public DateTime? RegisztracioDatuma { get; set; }
+
+    public string ProfilKepUtvonal { get; set; } = null!;
 
     public decimal? TimeBalance { get; set; }
 
-    public DateTime CreatedAt { get; set; }
-
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
-
-    public virtual ICollection<Service> Services { get; set; } = new List<Service>();
-
-    public virtual ICollection<Transaction> TransactionReceivers { get; set; } = new List<Transaction>();
-
-    public virtual ICollection<Transaction> TransactionSenders { get; set; } = new List<Transaction>();
 }

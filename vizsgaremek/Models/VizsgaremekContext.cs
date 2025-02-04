@@ -17,6 +17,8 @@ public partial class VizsgaremekContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Privilege> Privileges { get; set; }
+
     public virtual DbSet<Request> Requests { get; set; }
 
     public virtual DbSet<Service> Services { get; set; }
@@ -48,6 +50,28 @@ public partial class VizsgaremekContext : DbContext
                 .HasColumnType("text");
         });
 
+        modelBuilder.Entity<Privilege>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("privileges");
+
+            entity.HasIndex(e => e.Szint, "szint");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(1)")
+                .HasColumnName("id");
+            entity.Property(e => e.Description)
+                .HasColumnType("text")
+                .HasColumnName("description");
+            entity.Property(e => e.Nev)
+                .HasMaxLength(100)
+                .HasColumnName("nev");
+            entity.Property(e => e.Szint)
+                .HasColumnType("int(1)")
+                .HasColumnName("szint");
+        });
+
         modelBuilder.Entity<Request>(entity =>
         {
             entity.HasKey(e => e.RequestId).HasName("PRIMARY");
@@ -76,7 +100,7 @@ public partial class VizsgaremekContext : DbContext
 
             entity.HasOne(d => d.Requester).WithMany(p => p.Requests)
                 .HasForeignKey(d => d.RequesterId)
-                .HasConstraintName("requests_ibfk_1");
+                .HasConstraintName("requests_ibfk_3");
 
             entity.HasOne(d => d.Service).WithMany(p => p.Requests)
                 .HasForeignKey(d => d.ServiceId)
@@ -107,10 +131,6 @@ public partial class VizsgaremekContext : DbContext
             entity.Property(e => e.UserId)
                 .HasColumnType("int(11)")
                 .HasColumnName("UserID");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Services)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("services_ibfk_1");
         });
 
         modelBuilder.Entity<Transaction>(entity =>
@@ -145,14 +165,6 @@ public partial class VizsgaremekContext : DbContext
                 .HasDefaultValueSql("'current_timestamp()'")
                 .HasColumnType("timestamp");
 
-            entity.HasOne(d => d.Receiver).WithMany(p => p.TransactionReceivers)
-                .HasForeignKey(d => d.ReceiverId)
-                .HasConstraintName("transactions_ibfk_2");
-
-            entity.HasOne(d => d.Sender).WithMany(p => p.TransactionSenders)
-                .HasForeignKey(d => d.SenderId)
-                .HasConstraintName("transactions_ibfk_1");
-
             entity.HasOne(d => d.Service).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.ServiceId)
                 .HasConstraintName("transactions_ibfk_3");
@@ -162,31 +174,35 @@ public partial class VizsgaremekContext : DbContext
         {
             entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
-            entity.ToTable("users");
+            entity.ToTable("user");
 
             entity.HasIndex(e => e.Email, "Email").IsUnique();
 
-            entity.HasIndex(e => e.PrivilegeId, "PrivilegeID");
+            entity.HasIndex(e => e.FelhasznaloNev, "FelhasznaloNev").IsUnique();
 
-            entity.HasIndex(e => e.Username, "Username").IsUnique();
+            entity.HasIndex(e => e.Jogosultsag, "Jogosultsag");
 
             entity.Property(e => e.UserId)
                 .HasColumnType("int(11)")
                 .HasColumnName("UserID");
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("'current_timestamp()'")
-                .HasColumnType("timestamp");
+            entity.Property(e => e.Aktiv).HasColumnType("int(1)");
             entity.Property(e => e.Email).HasMaxLength(100);
-            entity.Property(e => e.FullName).HasMaxLength(100);
-            entity.Property(e => e.Password).HasMaxLength(255);
-            entity.Property(e => e.PrivilegeId)
-                .HasDefaultValueSql("'1'")
-                .HasColumnType("int(1)")
-                .HasColumnName("PrivilegeID");
+            entity.Property(e => e.FelhasznaloNev).HasMaxLength(100);
+            entity.Property(e => e.Hash)
+                .HasMaxLength(64)
+                .HasColumnName("HASH");
+            entity.Property(e => e.Jogosultsag).HasColumnType("int(1)");
+            entity.Property(e => e.ProfilKepUtvonal).HasMaxLength(64);
+            entity.Property(e => e.RegisztracioDatuma)
+                .HasDefaultValueSql("'current_timestamp()'")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Salt)
+                .HasMaxLength(64)
+                .HasColumnName("SALT");
+            entity.Property(e => e.TeljesNev).HasMaxLength(60);
             entity.Property(e => e.TimeBalance)
                 .HasPrecision(10)
                 .HasDefaultValueSql("'0.00'");
-            entity.Property(e => e.Username).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);
