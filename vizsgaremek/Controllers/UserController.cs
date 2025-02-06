@@ -29,5 +29,34 @@ namespace vizsgaremek.Controllers
                 }
             }
         }
+        [HttpPost("Register")]
+        public async Task<IActionResult> Registry(User user)
+        {
+            using (var context = new VizsgaremekContext())
+            {
+                try
+                {
+                    if (context.Users.FirstOrDefault(u => u.FelhasznaloNev == user.FelhasznaloNev) != null)
+                    {
+                        return BadRequest("A felhasználónév már foglalt");
+                    }
+                    if (context.Users.FirstOrDefault(u => u.Email == user.Email) != null)
+                    {
+                        return BadRequest("Az email cím már foglalt!");
+                    }
+                    user.Aktiv = 0;
+                    user.Jogosultsag = 0;
+                    user.Hash = Program.CreateSHA256(user.Hash);
+                    await context.Users.AddAsync(user);
+                    await context.SaveChangesAsync();
+                   
+                    return Ok("Sikeres regisztráció! Az aktiváláshoz ellenőrizze az email fiókját!");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
     }
 }
