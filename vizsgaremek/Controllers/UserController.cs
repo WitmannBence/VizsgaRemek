@@ -49,7 +49,7 @@ namespace vizsgaremek.Controllers
                     user.Hash = Program.CreateSHA256(user.Hash);
                     await context.Users.AddAsync(user);
                     await context.SaveChangesAsync();
-                   
+                    Program.SendEmail(user.Email, "Regisztráció", $"A következő linkre kattintva véglegesítse a regisztrációját: \nhttp://localhost:5000/api/Registry?felhasznaloNev={user.FelhasznaloNev}&email={user.Email}");
                     return Ok("Sikeres regisztráció! Az aktiváláshoz ellenőrizze az email fiókját!");
                 }
                 catch (Exception ex)

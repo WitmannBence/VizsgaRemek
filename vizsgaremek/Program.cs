@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using vizsgaremek.Models;
@@ -38,6 +39,19 @@ namespace vizsgaremek
         }
 
         public static Dictionary<string, User> LoggedInUsers = new Dictionary<string, User>();
+        public static async Task SendEmail(string mailAddressTo, string subject, string body)
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+            mail.From = new MailAddress("bummix37@gmail.com");
+            mail.To.Add(mailAddressTo);
+            mail.Subject = subject;
+            mail.Body = body;
+            smtpClient.Port = 587;
+            smtpClient.Credentials = new System.Net.NetworkCredential("bummix37@gmail.com", "txfbltomdmmeebf");
+            smtpClient.EnableSsl = true;
+            await smtpClient.SendMailAsync(mail);
+        }
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
