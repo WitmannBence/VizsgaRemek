@@ -27,6 +27,8 @@ public partial class VizsgaremekContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<UserService> UserServices { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySQL("SERVER=localhost;PORT=3306;DATABASE=vizsgaremek;USER=root;PASSWORD=;SSL MODE=none;");
@@ -203,6 +205,37 @@ public partial class VizsgaremekContext : DbContext
             entity.Property(e => e.TimeBalance)
                 .HasPrecision(10)
                 .HasDefaultValueSql("'0.00'");
+        });
+
+        modelBuilder.Entity<UserService>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("user_services");
+
+            entity.HasIndex(e => e.ServiceId, "ServiceID");
+
+            entity.HasIndex(e => e.UserId, "UserID_2");
+
+            entity.HasIndex(e => new { e.UserId, e.ServiceId }, "UserId");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.ServiceId)
+                .HasColumnType("int(11)")
+                .HasColumnName("ServiceID");
+            entity.Property(e => e.UserId)
+                .HasColumnType("int(11)")
+                .HasColumnName("UserID");
+
+            entity.HasOne(d => d.Service).WithMany(p => p.UserServices)
+                .HasForeignKey(d => d.ServiceId)
+                .HasConstraintName("user_services_ibfk_2");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserServices)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("user_services_ibfk_1");
         });
 
         OnModelCreatingPartial(modelBuilder);
