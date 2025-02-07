@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace vizsgaremek.Models;
 
@@ -19,5 +20,6 @@ public partial class Transaction
 
     public DateTime TransactionDate { get; set; }
 
+    [JsonIgnore]
     public virtual Service Service { get; set; } = null!;
 }

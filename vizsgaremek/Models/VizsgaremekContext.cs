@@ -130,6 +130,9 @@ public partial class VizsgaremekContext : DbContext
                 .HasDefaultValueSql("'NULL'")
                 .HasColumnType("text");
             entity.Property(e => e.ServiceName).HasMaxLength(100);
+            entity.Property(e => e.TimeCost)
+                .HasPrecision(10)
+                .HasDefaultValueSql("'NULL'");
             entity.Property(e => e.UserId)
                 .HasColumnType("int(11)")
                 .HasColumnName("UserID");

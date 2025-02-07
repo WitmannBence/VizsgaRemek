@@ -11,49 +11,33 @@ namespace vizsgaremek.Controllers
     [ApiController]
     public class ServiceController : ControllerBase
     {
-        private readonly VizsgaremekContext _context;
-
-        public ServiceController(VizsgaremekContext context)
-        {
-            _context = context;
-        }
-
         [HttpPost]
-        public async Task<ActionResult<Service>> CreateService([FromBody] CreateServiceDto dto)
+        public async Task<IActionResult> CreateService(Service service, string uId)
         {
-            var username = User.Identity.Name;
-
-            if (string.IsNullOrEmpty(username))
+            using (var context = new VizsgaremekContext())
             {
-                return Unauthorized("notloggedin.");
+                try
+                {
+                    if (!Program.LoggedInUsers.ContainsKey(uId))
+                    {
+                        return Unauthorized("Nem vagy bejelentkezve");
+                    }
+                    if (service == null)
+                    {
+                        return BadRequest("Üres objektum");
+                    }
+
+
+                    context.Services.Add(service);
+                    await context.SaveChangesAsync();
+                    return Ok("Sikeres rögzítés");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            var user = await _context.Users
-                .Where(u => u.FelhasznaloNev == username)
-                .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                return NotFound("how did u do this");
-            }
-
-            var service = new Service
-            {
-                ServiceName = dto.ServiceName,
-                Description = dto.Description,
-                Category = dto.Category,
-                CreatedAt = DateTime.UtcNow,  
-                UserId = user.UserId         
-            };
-            _context.Services.Add(service);
-            await _context.SaveChangesAsync();
-            var userService = new UserService
-            {
-                UserId = user.UserId,
-                ServiceId = service.ServiceId
-            };
-            _context.UserServices.Add(userService);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(CreateService), new { id = service.ServiceId }, service);
+            
         }
     }
 }

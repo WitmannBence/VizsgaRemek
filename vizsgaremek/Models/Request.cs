@@ -15,6 +15,7 @@ public partial class Request
 
     public DateTime RequestedAt { get; set; }
 
+
     public virtual User Requester { get; set; } = null!;
 
     public virtual Service Service { get; set; } = null!;

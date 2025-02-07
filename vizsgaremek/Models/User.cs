@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace vizsgaremek.Models;
 
@@ -27,7 +28,8 @@ public partial class User
 
     public decimal? TimeBalance { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
-
+    [JsonIgnore]
     public virtual ICollection<UserService> UserServices { get; set; } = new List<UserService>();
 }
