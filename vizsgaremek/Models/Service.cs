@@ -8,6 +8,7 @@ public partial class Service
 {
     public int ServiceId { get; set; }
 
+    [JsonIgnore]
     public int UserId { get; set; }
 
     public string ServiceName { get; set; } = null!;

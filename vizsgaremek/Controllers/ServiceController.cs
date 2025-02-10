@@ -22,14 +22,27 @@ namespace vizsgaremek.Controllers
                     {
                         return Unauthorized("Nem vagy bejelentkezve");
                     }
+
                     if (service == null)
                     {
                         return BadRequest("Üres objektum");
                     }
 
+                    int userId = Program.LoggedInUsers[uId].UserId;
+
+                    
+                    var userExists = await context.Users.AnyAsync(u => u.UserId == userId);
+                    if (!userExists)
+                    {
+                        return BadRequest("A felhasználó nem található az adatbázisban.");
+                    }
+
+                 
+                    service.UserId = userId;
 
                     context.Services.Add(service);
                     await context.SaveChangesAsync();
+
                     return Ok("Sikeres rögzítés");
                 }
                 catch (Exception ex)
@@ -37,9 +50,36 @@ namespace vizsgaremek.Controllers
                     return BadRequest(ex.Message);
                 }
             }
-            
         }
+        [HttpGet("ServicesByID")]
+        public IActionResult GetServices(int id)
+        {
+            using (var context = new VizsgaremekContext()) 
+            {
+                try
+                {
+                    
+                  var  keres = context.Services.Where(x => x.UserId == id).ToList();
+                    if (keres == null || keres.Count == 0)
+                    {
+                        return NotFound("Nem találtunk szolgáltatást");
+                    }
+                    else { return Ok(keres); }
+                    
+
+                }
+                catch (Exception ex)
+                {
+
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+
+
+
     }
 }
+
 
 
