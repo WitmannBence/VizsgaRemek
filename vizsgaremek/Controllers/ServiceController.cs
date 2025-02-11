@@ -75,6 +75,27 @@ namespace vizsgaremek.Controllers
                 }
             }
         }
+        [HttpGet("AllService")]
+        public IActionResult GetUsers()
+        {
+            using (var context = new VizsgaremekContext())
+            {
+                try
+                {
+                    List<Service> services = new List<Service>();
+                    {
+                        services = context.Services.ToList();
+
+                    }
+                    return Ok(services);
+                }
+                catch (Exception ex)
+                {
+
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
 
 
 
