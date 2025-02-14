@@ -119,3 +119,9 @@ body, html {
 .card strong {
   color: #1e40af;
 } 
+
+.container {
+  margin: 0;
+  padding: 0;
+}
+

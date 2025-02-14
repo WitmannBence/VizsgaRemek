@@ -1,21 +1,25 @@
 // src/App.js
-import React, { useState } from 'react';
 import RegistrationPage from './RegistrationPage';
 import './App.css';
-import { Route, Router, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from './Home';
 import LoginPage from './LoginPage';
 import ServicesPage from './ServicesPage';
+import Nav from './Components/Nav';
+import ServiceDetailPage from './ServiceDetailPage';
 
 const App = () => {
     
     return (
-        <div className="container">
+       
+        <div className>
+             <Nav/>
            <Routes>
             <Route path='/' element={<Home/>}/>
             <Route path='/LoginPage' element={<LoginPage/>}/>
             <Route path='/RegistrationPage' element={<RegistrationPage/>}/>
             <Route path='/Services' element={<ServicesPage/>}/>
+            <Route path="/ServiceDetails/:id" element={<ServiceDetailPage />} />
            </Routes>
         </div>
     );

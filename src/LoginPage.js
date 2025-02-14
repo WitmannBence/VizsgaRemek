@@ -11,7 +11,7 @@ const LoginPage = () => {
 
         try {
             // Step 1: Fetch salt from API
-            const saltResponse = await fetch(`https://localhost:7025/api/Login/GetSalt/${username}`, {
+            const saltResponse = await fetch(`https://localhost:5293/api/Login/GetSalt/${username}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -27,7 +27,7 @@ const LoginPage = () => {
             const tmpHash = CryptoJS.SHA256(password + salt).toString();
 
             // Step 3: Send the hashed password to the backend
-            const loginResponse = await fetch('https://localhost:7025/api/Login', {
+            const loginResponse = await fetch('http://localhost:5293/api/Service/AllService', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

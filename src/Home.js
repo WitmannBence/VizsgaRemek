@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './App.css';
 
 const Home = () => {
 
     return (
-        <div className="container">
+        <div>
                 <div className="hero full-screen">
                     <h1>Time Bank</h1>
                     <p>Üdvözlünk a Time Bank weboldalán!</p>

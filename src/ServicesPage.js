@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import Card from "./Components/Card";
 
-function App() {
+function ServicesPage() {
   const [data, setData] = useState([]);
 
   function Get() {
-    fetch("https://localhost:7025/api/Service/AllService")
+    fetch("http://localhost:5293/api/Service/AllService")
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -18,10 +19,11 @@ function App() {
   }, []);
 
   return (
-    <div className="servicespage">
+    <div className="servicespage full-screen">
       {data.map((service) => (
         <Card
           key={service.serviceId}
+          serviceId={service.serviceId} // Pass serviceId to Card
           serviceName={service.serviceName}
           timeCost={service.timeCost}
           description={service.description}
@@ -33,16 +35,4 @@ function App() {
   );
 }
 
-function Card({ serviceName, timeCost, description, category, createdAt }) {
-  return (
-    <div className="card">
-      <h2>{serviceName}</h2>
-      <p><strong>Description:</strong> {description}</p>
-      <p><strong>Category:</strong> {category}</p>
-      <p><strong>:</strong> {timeCost} </p>
-      <p><strong>Created At:</strong> {new Date(createdAt).toLocaleString()}</p>
-    </div>
-  );
-}
-
-export default App;
+export default ServicesPage;
