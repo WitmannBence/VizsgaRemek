@@ -51,7 +51,7 @@ namespace vizsgaremek.Controllers
                 }
             }
         }
-        [HttpGet("ServicesByID")]
+        [HttpGet("ServicesByUSERID")]
         public IActionResult GetServices(int id)
         {
             using (var context = new VizsgaremekContext()) 
@@ -88,6 +88,30 @@ namespace vizsgaremek.Controllers
 
                     }
                     return Ok(services);
+                }
+                catch (Exception ex)
+                {
+
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+        [HttpGet("ServiceBySERVICEID")]
+        public IActionResult GetServiceBYID(int id)
+        {
+            using (var context = new VizsgaremekContext())
+            {
+                try
+                {
+
+                    var keres = context.Services.Where(x => x.ServiceId == id).ToList();
+                    if (keres == null || keres.Count == 0)
+                    {
+                        return NotFound("Még nincs ilyen szolgáltatás ezzel az azonosítóval");
+                    }
+                    else { return Ok(keres); }
+
+
                 }
                 catch (Exception ex)
                 {
