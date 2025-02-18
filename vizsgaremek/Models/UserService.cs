@@ -11,7 +11,6 @@ public partial class UserService
     public int UserId { get; set; }
 
     public int ServiceId { get; set; }
-
     [JsonIgnore]
     public virtual Service Service { get; set; } = null!;
     [JsonIgnore]

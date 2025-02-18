@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace vizsgaremek.Models;
 
 public partial class User
 {
+
     public int UserId { get; set; }
 
     public string FelhasznaloNev { get; set; } = null!;
@@ -24,10 +26,10 @@ public partial class User
 
     public DateTime? RegisztracioDatuma { get; set; }
 
-    public string ProfilKepUtvonal { get; set; } = null!;
+    public string? ProfilKepUtvonal { get; set; } = null!;
 
+  
     public decimal? TimeBalance { get; set; }
-
     [JsonIgnore]
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
     [JsonIgnore]

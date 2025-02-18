@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
@@ -48,7 +49,7 @@ namespace vizsgaremek
             mail.Subject = subject;
             mail.Body = body;
             smtpClient.Port = 587;
-            smtpClient.Credentials = new System.Net.NetworkCredential("bummix37@gmail.com", "txfbltomdmmeebf");
+            smtpClient.Credentials = new System.Net.NetworkCredential("bummix37@gmail.com", "mkdj fqik svpe swaw");
             smtpClient.EnableSsl = true;
             await smtpClient.SendMailAsync(mail);
         }
@@ -57,7 +58,7 @@ namespace vizsgaremek
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddCors(c => { c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); });
             // Add services to the container.
-
+   
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

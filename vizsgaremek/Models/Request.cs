@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace vizsgaremek.Models;
 
@@ -14,9 +15,8 @@ public partial class Request
     public string? Status { get; set; }
 
     public DateTime RequestedAt { get; set; }
-
-
+    [JsonIgnore]
     public virtual User Requester { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual Service Service { get; set; } = null!;
 }

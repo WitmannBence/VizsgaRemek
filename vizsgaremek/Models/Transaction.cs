@@ -19,7 +19,6 @@ public partial class Transaction
     public string? Description { get; set; }
 
     public DateTime TransactionDate { get; set; }
-
     [JsonIgnore]
     public virtual Service Service { get; set; } = null!;
 }

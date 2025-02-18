@@ -54,6 +54,7 @@ namespace vizsgaremek.Controllers
                             Token = token,
                             FelhasznaloNev = response.FelhasznaloNev,
                             userID = response.UserId,
+                            Jogosultsag = response.Jogosultsag,
                             TeljesNev = response.TeljesNev,
                             Email = response.Email,
                             ProfilKepUtvonal = response.ProfilKepUtvonal
