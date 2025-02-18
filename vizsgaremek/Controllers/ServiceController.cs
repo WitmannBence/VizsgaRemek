@@ -104,8 +104,8 @@ namespace vizsgaremek.Controllers
                 try
                 {
 
-                    var keres = context.Services.Where(x => x.ServiceId == id).ToList();
-                    if (keres == null || keres.Count == 0)
+                    var keres = context.Services.FirstOrDefault(x => x.ServiceId == id);
+                    if (keres == null)
                     {
                         return NotFound("Még nincs ilyen szolgáltatás ezzel az azonosítóval");
                     }
