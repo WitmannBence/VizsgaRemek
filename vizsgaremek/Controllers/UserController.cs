@@ -8,7 +8,7 @@ namespace vizsgaremek.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("AllUsers")]
         public IActionResult GetUsers() 
         {
             using (var context = new VizsgaremekContext())
@@ -49,7 +49,7 @@ namespace vizsgaremek.Controllers
                     user.Hash = Program.CreateSHA256(user.Hash);
                     await context.Users.AddAsync(user);
                     await context.SaveChangesAsync();
-                    await  Program.SendEmail(user.Email, "Regisztráció", $"A következő linkre kattintva véglegesítse a regisztrációját: \nhttp://localhost:5293/api/Registry?felhasznaloNev={user.FelhasznaloNev}&email={user.Email}");
+                    await  Program.SendEmail(user.Email, "Regisztráció", $"A következő linkre kattintva véglegesítse a regisztrációját: \nhttp://localhost:5293/api/User/Aktivacio?Username={user.FelhasznaloNev}&email={user.Email}");
                     return Ok("Sikeres regisztráció! Az aktiváláshoz ellenőrizze az email fiókját!");
                 }
                 catch (Exception ex)
@@ -61,7 +61,7 @@ namespace vizsgaremek.Controllers
                 }
             }
         }
-        [HttpGet("Aktiváció")]
+        [HttpGet("Aktivacio")]
         
         public async Task<IActionResult> Activate(string Username, string email)
         {
