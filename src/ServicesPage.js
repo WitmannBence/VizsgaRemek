@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Card from "./Components/Card";
+import axios from "axios";
 
 function ServicesPage() {
   const [data, setData] = useState([]);
 
   function Get() {
-    fetch("http://localhost:5293/api/Service/AllService")
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        console.log(data);
+    axios.get("http://localhost:5293/api/Service/AllService")
+      .then((response) => {
+        setData(response.data);
+        console.log(response.data);
       });
   }
 

@@ -1,11 +1,13 @@
-body, html {
+/* Global Styles */
+body,
+html {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-  background-color: #f9fafb; 
+  font-family: "Arial", sans-serif;
+  background-color: #f9fafb;
 }
 
 .full-screen {
@@ -17,8 +19,17 @@ body, html {
   text-align: center;
   background: linear-gradient(to bottom, #e3e3e3, #f9fafb);
   padding: 2rem;
+  box-sizing: border-box;
 }
 
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Feature Cards */
 .feature-cards {
   display: flex;
   flex-wrap: wrap;
@@ -26,8 +37,8 @@ body, html {
   gap: 1.5rem;
   margin: 1rem 0;
   max-width: 1200px;
+  width: 100%;
 }
-
 
 .card {
   background: #ffffff;
@@ -41,14 +52,14 @@ body, html {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-
+/* Buttons */
 .cta-button {
+  display: inline-block;
   margin-top: 1.5rem;
   padding: 0.75rem 1.5rem;
   background: #007bff;
@@ -58,70 +69,140 @@ body, html {
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
+  text-decoration: none;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 
 .cta-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
 }
 
+/* Services Page */
+.servicespage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
+/* Service Detail Page */
+.service-detail-container {
+  max-width: 800px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.service-detail-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.service-content {
+  padding: 2rem;
+}
+
+.service-title {
+  font-size: 2.5rem;
+  color: #1d4ed8;
+  margin-bottom: 1rem;
+}
+
+.service-description {
+  font-size: 1.1rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.service-info {
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-info p {
+  margin: 0.5rem 0;
+  color: #1e40af;
+}
+
+.additional-info-title {
+  font-size: 1.5rem;
+  color: #1d4ed8;
+  margin-bottom: 0.5rem;
+}
+
+.additional-info {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+  .full-screen {
+    padding: 1rem;
+  }
+
   .feature-cards {
     flex-direction: column;
-    gap: 1rem;
+    align-items: center;
   }
 
   .card {
     max-width: 100%;
   }
+
+  .servicespage {
+    grid-template-columns: 1fr;
+  }
+
+  .service-detail-container {
+    border-radius: 8px;
+  }
+
+  .service-title {
+    font-size: 2rem;
+  }
+
+  .service-content {
+    padding: 1.5rem;
+  }
+
+  .service-image {
+    height: 200px;
+  }
 }
 
-.servicespage {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusts cards horizontally */
-  gap: 1.5rem;
-  padding: 2rem;
-  justify-content: center;
-}
+@media (max-width: 480px) {
+  .cta-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
 
-/* Card styling */
-.card {
-  background: linear-gradient(135deg, #f3f4f6, #dbeafe); /* Add gradient for a vibrant look */
-  padding: 1.5rem;
-  border: 1px solid #93c5fd;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
+  .service-title {
+    font-size: 1.75rem;
+  }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #e0f2fe, #bae6fd); /* Slightly brighter on hover */
-  border-color: #0ea5e9;
-}
+  .service-description {
+    font-size: 1rem;
+  }
 
-.card h2 {
-  margin-bottom: 1rem;
-  color: #1d4ed8;
-  font-size: 1.5rem;
-}
-
-.card p {
-  margin: 0.5rem 0;
-  color: #333;
-}
-
-.card strong {
-  color: #1e40af;
-} 
-
-.container {
-  margin: 0;
-  padding: 0;
+  .additional-info-title {
+    font-size: 1.25rem;
+  }
 }
 
