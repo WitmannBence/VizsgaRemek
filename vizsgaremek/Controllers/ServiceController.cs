@@ -96,7 +96,7 @@ namespace vizsgaremek.Controllers
                 }
             }
         }
-        [HttpGet("ServiceBySERVICEID")]
+        [HttpGet("ServiceBySERVICEID/{id}")]
         public IActionResult GetServiceBYID(int id)
         {
             using (var context = new VizsgaremekContext())
