@@ -85,7 +85,7 @@ html {
   gap: 1.5rem;
   padding: 2rem;
   justify-content: center;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -204,5 +204,33 @@ html {
   .additional-info-title {
     font-size: 1.25rem;
   }
+}
+/* Navbar jobb oldalra igazítása */
+.navbar-nav.ml-auto {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Külön stílusok a username és logout gombhoz */
+.username-item {
+  margin-right: 20px; /* Különböző távolság a jobb oldalon */
+}
+
+.logout-item button {
+  background-color: red;
+  border-color: black;
+  border: 50px solid black;
+  border-radius: 10%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+  margin-top: 9px;
+  
+}a
+
+.logout-item button:hover {
+  text-decoration: underline;
 }
 

@@ -39,8 +39,13 @@ const LoginPage = () => {
 
             if (loginResponse.ok) {
                 const loggedInUser = await loginResponse.json();
+                const token = loggedInUser.token; // Or whatever the token is called in the response
+                const username = loggedInUser.felhasznaloNev
+                localStorage.setItem("token", token); // Store the token
+                localStorage.setItem("username",username )
                 alert('Login successful!');
                 console.log('Logged-in user:', loggedInUser);
+
 
                 // Redirect to home or dashboard
                 navigate('/Services');
