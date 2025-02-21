@@ -28,5 +28,7 @@ public partial class User
 
     public decimal? TimeBalance { get; set; }
     [JsonIgnore]
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+    [JsonIgnore]
     public virtual ICollection<UserService> UserServices { get; set; } = new List<UserService>();
 }

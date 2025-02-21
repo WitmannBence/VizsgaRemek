@@ -111,7 +111,7 @@ public partial class VizsgaremekContext : DbContext
 
             entity.HasIndex(e => e.SenderId, "SenderID");
 
-            entity.HasIndex(e => e.ServiceId, "ServiceID");
+            entity.HasIndex(e => e.UserServiceId, "ServiceID");
 
             entity.HasIndex(e => e.TransactionCode, "TransactionCode").IsUnique();
 
@@ -127,18 +127,22 @@ public partial class VizsgaremekContext : DbContext
             entity.Property(e => e.SenderId)
                 .HasColumnType("int(11)")
                 .HasColumnName("SenderID");
-            entity.Property(e => e.ServiceId)
-                .HasColumnType("int(11)")
-                .HasColumnName("ServiceID");
             entity.Property(e => e.TimeAmount).HasPrecision(10);
             entity.Property(e => e.TransactionCode).HasMaxLength(6);
             entity.Property(e => e.TransactionDate)
                 .HasDefaultValueSql("'current_timestamp()'")
                 .HasColumnType("timestamp");
+            entity.Property(e => e.UserServiceId)
+                .HasColumnType("int(11)")
+                .HasColumnName("UserServiceID");
 
-            entity.HasOne(d => d.Service).WithMany(p => p.Transactions)
-                .HasForeignKey(d => d.ServiceId)
-                .HasConstraintName("transactions_ibfk_3");
+            entity.HasOne(d => d.Sender).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.SenderId)
+                .HasConstraintName("transactions_ibfk_1");
+
+            entity.HasOne(d => d.UserService).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.UserServiceId)
+                .HasConstraintName("transactions_ibfk_2");
         });
 
         modelBuilder.Entity<User>(entity =>

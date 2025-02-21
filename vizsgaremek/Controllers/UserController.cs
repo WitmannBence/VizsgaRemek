@@ -46,6 +46,7 @@ namespace vizsgaremek.Controllers
                     }
                     user.Aktiv = 0;
                     user.Jogosultsag = 0;
+                    user.TimeBalance = 0;
                     user.Hash = Program.CreateSHA256(user.Hash);
                     await context.Users.AddAsync(user);
                     await context.SaveChangesAsync();

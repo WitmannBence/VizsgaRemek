@@ -10,7 +10,7 @@ namespace vizsgaremek.Controllers
     public class TransactionController : ControllerBase
     {
         [HttpPost("purchase")]
-        public async Task<IActionResult> PurchaseService(PurchaseDTO request, string uId)
+        public async Task<IActionResult> PurchaseService(Transaction transaction, string uId)
         {
             using (var context = new VizsgaremekContext())
             {
@@ -19,56 +19,32 @@ namespace vizsgaremek.Controllers
                     if (!Program.LoggedInUsers.ContainsKey(uId))
                     {
                         return Unauthorized("Nem vagy bejelentkezve");
-                    }
-
-                    var buyer = await context.Users.FindAsync(request.BuyerId);
-                    var service = await context.Services.FindAsync(request.ServiceId);
-
-                    if (buyer == null || service == null)
-                    {
-                        return NotFound("Felhasználó vagy szolgáltatás nem található.");
-                    }
-
-                    var seller = await context.Users.FindAsync(service.UserId);
-                    if (seller == null)
-                    {
-                        return NotFound("Az eladó nem található.");
-                    }
-
-                    
-                    if (buyer.TimeBalance < service.TimeCost)
-                    {
-                        return BadRequest("Nincs elegendő időkeret a vásárláshoz.");
-                    }
-
-                    
-                    buyer.TimeBalance -= service.TimeCost;
-                    seller.TimeBalance += service.TimeCost;
-
-                   
+                    }        
                     string transactionCode = GenerateTransactionCode();
 
-            
-                    var transaction = new Transaction
+                    var newTransaction = new Transaction
                     {
-                        SenderId = buyer.UserId,
-                        ReceiverId = seller.UserId,
-                        ServiceId = service.ServiceId,
-                        TimeAmount = service.TimeCost,
-                        Description = $"Service purchased: {service.ServiceName}",
+                        SenderId = transaction.SenderId,
+                        ReceiverId = transaction.ReceiverId,
+                        UserServiceId = transaction.UserServiceId,
+                        TimeAmount = transaction.TimeAmount,
+                        Description = "Service reserved",
                         TransactionDate = DateTime.UtcNow,
                         TransactionCode = transactionCode
                     };
 
-                    context.Transactions.Add(transaction);
-                    await context.SaveChangesAsync(); 
-
-                 
-                    return Ok(new
+                 var seller = await context.Users.FirstOrDefaultAsync(u => u.UserId == newTransaction.ReceiverId);
+                    if (seller != null)
                     {
-                        SellerEmail = seller.Email,
-                        TransactionCode = transactionCode
-                    });
+                        context.Transactions.Add(newTransaction);
+                        await context.SaveChangesAsync();
+                        return Ok(new
+                        {
+                            SellerEmail = seller.Email,
+                            TransactionCode = transactionCode
+                        });
+                    }
+                    return NotFound("Hibás eladó");
                 }
                 catch (Exception ex)
                 {
@@ -91,7 +67,7 @@ namespace vizsgaremek.Controllers
                         {
                             TransactionID = t.TransactionId,
                             ServiceName = context.Services
-                                            .Where(s => s.ServiceId == t.ServiceId)
+                                            .Where(s => s.ServiceId == t.UserServiceId)
                                             .Select(s => s.ServiceName)
                                             .FirstOrDefault(),
                             TimeAmount = t.TimeAmount,
@@ -118,7 +94,7 @@ namespace vizsgaremek.Controllers
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             var random = new Random();
             return new string(Enumerable.Repeat(chars, 6)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
     }

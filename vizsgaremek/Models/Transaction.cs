@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace vizsgaremek.Models;
 
@@ -12,7 +11,7 @@ public partial class Transaction
 
     public int ReceiverId { get; set; }
 
-    public int ServiceId { get; set; }
+    public int UserServiceId { get; set; }
 
     public decimal? TimeAmount { get; set; }
 
@@ -21,6 +20,8 @@ public partial class Transaction
     public DateTime TransactionDate { get; set; }
 
     public string TransactionCode { get; set; } = null!;
-    [JsonIgnore]
-    public virtual Service Service { get; set; } = null!;
+
+    public virtual User? Sender { get; set; } = null!;
+
+    public virtual UserService? UserService { get; set; } = null!;
 }
