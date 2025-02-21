@@ -42,6 +42,13 @@ namespace vizsgaremek.Controllers
 
                     context.Services.Add(service);
                     await context.SaveChangesAsync();
+                    var userservice = new UserService
+                    {
+                        UserId = userId,
+                        ServiceId = service.ServiceId
+                    };
+                     context.UserServices.Add(userservice);
+                    await context.SaveChangesAsync();
 
                     return Ok("Sikeres rögzítés");
                 }

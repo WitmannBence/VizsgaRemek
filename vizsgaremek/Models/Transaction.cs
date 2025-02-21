@@ -14,11 +14,13 @@ public partial class Transaction
 
     public int ServiceId { get; set; }
 
-    public decimal TimeAmount { get; set; }
+    public decimal? TimeAmount { get; set; }
 
     public string? Description { get; set; }
 
     public DateTime TransactionDate { get; set; }
+
+    public string TransactionCode { get; set; } = null!;
     [JsonIgnore]
     public virtual Service Service { get; set; } = null!;
 }

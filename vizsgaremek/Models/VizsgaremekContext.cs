@@ -19,8 +19,6 @@ public partial class VizsgaremekContext : DbContext
 
     public virtual DbSet<Privilege> Privileges { get; set; }
 
-    public virtual DbSet<Request> Requests { get; set; }
-
     public virtual DbSet<Service> Services { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
@@ -74,41 +72,6 @@ public partial class VizsgaremekContext : DbContext
                 .HasColumnName("szint");
         });
 
-        modelBuilder.Entity<Request>(entity =>
-        {
-            entity.HasKey(e => e.RequestId).HasName("PRIMARY");
-
-            entity.ToTable("requests");
-
-            entity.HasIndex(e => e.RequesterId, "RequesterID");
-
-            entity.HasIndex(e => e.ServiceId, "ServiceID");
-
-            entity.Property(e => e.RequestId)
-                .HasColumnType("int(11)")
-                .HasColumnName("RequestID");
-            entity.Property(e => e.RequestedAt)
-                .HasDefaultValueSql("'current_timestamp()'")
-                .HasColumnType("timestamp");
-            entity.Property(e => e.RequesterId)
-                .HasColumnType("int(11)")
-                .HasColumnName("RequesterID");
-            entity.Property(e => e.ServiceId)
-                .HasColumnType("int(11)")
-                .HasColumnName("ServiceID");
-            entity.Property(e => e.Status)
-                .HasDefaultValueSql("'''Pending'''")
-                .HasColumnType("enum('Pending','Approved','Completed','Rejected')");
-
-            entity.HasOne(d => d.Requester).WithMany(p => p.Requests)
-                .HasForeignKey(d => d.RequesterId)
-                .HasConstraintName("requests_ibfk_3");
-
-            entity.HasOne(d => d.Service).WithMany(p => p.Requests)
-                .HasForeignKey(d => d.ServiceId)
-                .HasConstraintName("requests_ibfk_2");
-        });
-
         modelBuilder.Entity<Service>(entity =>
         {
             entity.HasKey(e => e.ServiceId).HasName("PRIMARY");
@@ -150,6 +113,8 @@ public partial class VizsgaremekContext : DbContext
 
             entity.HasIndex(e => e.ServiceId, "ServiceID");
 
+            entity.HasIndex(e => e.TransactionCode, "TransactionCode").IsUnique();
+
             entity.Property(e => e.TransactionId)
                 .HasColumnType("int(11)")
                 .HasColumnName("TransactionID");
@@ -166,6 +131,7 @@ public partial class VizsgaremekContext : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("ServiceID");
             entity.Property(e => e.TimeAmount).HasPrecision(10);
+            entity.Property(e => e.TransactionCode).HasMaxLength(6);
             entity.Property(e => e.TransactionDate)
                 .HasDefaultValueSql("'current_timestamp()'")
                 .HasColumnType("timestamp");
