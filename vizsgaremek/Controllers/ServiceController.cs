@@ -128,6 +128,46 @@ namespace vizsgaremek.Controllers
             }
         }
 
+        public async Task<IActionResult> DeleteService(int serviceId, string uId)
+        {
+            using (var context = new VizsgaremekContext())
+            {
+                try
+                {
+                    if (!Program.LoggedInUsers.ContainsKey(uId))
+                    {
+                        return Unauthorized("Nem vagy bejelentkezve");
+                    }
+
+                    var loggedInUser = Program.LoggedInUsers[uId];
+                    int userId = Program.LoggedInUsers[uId].UserId;
+                    int userPermissionLevel = Program.LoggedInUsers[uId].Jogosultsag;
+
+                    var service = await context.Services.FindAsync(serviceId);
+                    if (service == null)
+                    {
+                        return NotFound("A szolgáltatás nem található.");
+                    }
+
+                    if (service.UserId != userId && userPermissionLevel != 9)
+                    {
+                        return Forbid("Nincs jogosultságod ennek a szolgáltatásnak a törlésére.");
+                    }
+
+                    
+                    var userServices = context.UserServices.Where(us => us.ServiceId == serviceId);
+                    context.UserServices.RemoveRange(userServices);
+                    context.Services.Remove(service);
+                    await context.SaveChangesAsync();
+
+                    return Ok("Szolgáltatás sikeresen törölve.");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
 
 
     }
