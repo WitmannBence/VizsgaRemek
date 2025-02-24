@@ -80,12 +80,15 @@ public partial class VizsgaremekContext : DbContext
 
             entity.HasIndex(e => e.UserId, "UserID");
 
+            entity.HasIndex(e => e.CategoryId, "fk_category");
+
             entity.Property(e => e.ServiceId)
                 .HasColumnType("int(11)")
                 .HasColumnName("ServiceID");
-            entity.Property(e => e.Category)
-                .HasMaxLength(50)
-                .HasDefaultValueSql("'NULL'");
+            entity.Property(e => e.CategoryId)
+                .HasDefaultValueSql("'NULL'")
+                .HasColumnType("int(11)")
+                .HasColumnName("CategoryID");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("'current_timestamp()'")
                 .HasColumnType("timestamp");
@@ -99,6 +102,11 @@ public partial class VizsgaremekContext : DbContext
             entity.Property(e => e.UserId)
                 .HasColumnType("int(11)")
                 .HasColumnName("UserID");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Services)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("fk_category");
         });
 
         modelBuilder.Entity<Transaction>(entity =>

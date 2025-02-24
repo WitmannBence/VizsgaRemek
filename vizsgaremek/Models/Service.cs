@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace vizsgaremek.Models;
 
@@ -16,9 +15,11 @@ public partial class Service
 
     public string? Description { get; set; }
 
-    public string? Category { get; set; }
-
     public DateTime CreatedAt { get; set; }
-    [JsonIgnore]
+
+    public int? CategoryId { get; set; }
+
+    public virtual Category? Category { get; set; }
+
     public virtual ICollection<UserService> UserServices { get; set; } = new List<UserService>();
 }
